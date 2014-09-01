@@ -51,7 +51,7 @@ def post_alert(msg_type, msg_severity, msg_body):
 	    		data=data,
 	    	)
 	    	response.raise_for_status()
-	    	log_this( '{0} : Successfully posted the message'.format(TIME) )
+	    	log_this( '{0} : Successfully posted a message'.format(TIME) )
 	except requests.exceptions.ConnectionError as e:
     		log_this( '{1} : There is a problem with your network. {0}'.format(e, TIME) )
     		sys.exit(0)
