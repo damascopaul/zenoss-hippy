@@ -45,4 +45,5 @@ The default location for the log file is ```/var/log/zenoss-hippy.log```. You wi
 
 #####Set the proper file permissions
 ```$ sudo chown zenoss:zenoss /var/log/zenoss-hippy.log```
+
 ```$ sudo chmod 660 /var/log/zenoss-hippy.log```
