@@ -8,10 +8,16 @@ import datetime
 import sys
 
 TIME=datetime.datetime.utcnow()
+LOG_FILE='/var/log/zenoss-hippy.log'
 
 #HipChat specific global variables
 ROOM_ID=''
 API_TOKEN=''
+
+def log_this(log_message):
+	log = open(LOG_FILE, 'a')
+	log.write(log_message)
+	log.close()
 
 #Post a message in HipChat using HipChat API v2
 def post_alert(msg_type, msg_severity, msg_body):
@@ -45,18 +51,18 @@ def post_alert(msg_type, msg_severity, msg_body):
 	    		data=data,
 	    	)
 	    	response.raise_for_status()
-	    	print '{0} : Successfully posted the message'.format(TIME)
+	    	log_this( '{0} : Successfully posted the message'.format(TIME) )
 	except requests.exceptions.ConnectionError as e:
-    		print '{1} : There is a problem with your network. {0}'.format(e, TIME)
+    		log_this( '{1} : There is a problem with your network. {0}'.format(e, TIME) )
     		sys.exit(0)
 	except requests.exceptions.InvalidURL as e:
-		print "{1} : {0}".format(e, TIME)
+		log_this( "{1} : {0}".format(e, TIME) )
 		sys.exit(0)
 	except requests.exceptions.HTTPError as e:
-    		print '{1} : An error occured. {0}'.format(e, TIME)
+    		log_this( '{1} : An error occured. {0}'.format(e, TIME) )
     		sys.exit(0)
     	except Exception as e:
-    		print '{1} : Unexpected error: {0}'.format(e, TIME)
+    		log_this( '{1} : Unexpected error: {0}'.format(e, TIME) )
     		sys.exit(0)
 
 def construct_message(alrt_type, alrt_body):
