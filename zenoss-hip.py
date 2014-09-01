@@ -28,7 +28,7 @@ def post_alert(msg_type, msg_severity, msg_body):
 	else:
 		msg_color = 'green'
 
-	Send the message to HipChat
+	# Send the message to HipChat
 	headers = {
         		'Content-type': 'application/json',
     	}
@@ -71,8 +71,8 @@ def construct_message(alrt_type, alrt_body):
 
 parser = argparse.ArgumentParser(
 	description="Sends an incident/clear message from Zenoss to a HipChat Room",
-	usage='\nFor incidents: python zenoss-hip.py ${evt/severityString} ${evt/device} ${evt/summary} ${evt/component} ${evt/lastTime} ${evt/message} ${urls/eventUrl} ${urls/ackUrl} ${urls/closeUrl} ${urls/eventsUrl} -t incident \
-		\n\nFor clears: python zenoss-hip.py ${evt/severityString} ${evt/device} ${clearEvt/summary} ${evt/summary} ${clearEvt/firstTime} ${evt/component} ${evt/message} ${urls/reopenUrl} -t clear'
+	usage="\nFor incidents: python zenoss-hip.py '${evt/severityString}' '${evt/device}' '${evt/summary}' '${evt/component}' '${evt/lastTime}' '${evt/message}' '${urls/eventUrl}' '${urls/ackUrl}' '${urls/closeUrl}' '${urls/eventsUrl}' -t incident \
+		\n\nFor clears: python zenoss-hip.py '${evt/severityString}' '${evt/device}' '${clearEvt/summary}' '${evt/summary}' '${clearEvt/firstTime}' '${evt/component}' '${evt/message}' '${urls/reopenUrl}' -t clear"
 )
 parser.add_argument(
 	'alert', 
