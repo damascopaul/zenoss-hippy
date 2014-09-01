@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-# python zenoss-hip.py Critical zenoss.cascadeo.com 'This is a summary' '/this/component' sometime 'This is a message' http://zenoss.cascadeo.com/evet http://zenoss.cascadeo.com/ack http://zenoss.cascadeo.com/close http://zenoss.cascadeo.com/events -t incident
-
 import requests
 import json
 import requests.exceptions
