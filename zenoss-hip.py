@@ -69,11 +69,12 @@ def construct_message(alrt_type, alrt_body):
 	message = None
 
 	if alrt_type == 'incident':
-		message = '[casc-zenoss] SYSTEMS - {1} {2} <br /> Device: {1} <br /> Component: {3} <br /> Severity: {0} <br /> Time: {4} <br /> Message: <br /> {5} <br /> <a href="{6}">Event Detail</a> <br /> <a href="{7}">Acknowledge</a> <br /> <a href="{8}">Close</a> <br /> <a href="{9}">Device Events</a>'.format(alrt_body[0], alrt_body[1], alrt_body[2], alrt_body[3], alrt_body[4], alrt_body[5], alrt_body[6], alrt_body[7], alrt_body[8], alrt_body[9])
+		message = """[casc-zenoss] SYSTEMS - {1} {2} <br /> Device: {1} <br /> Component: {3} <br /> Severity: {0} <br /> Time: {4} <br /> Message: <br /> {5} <br /> <a href="{6}">Event Detail</a> <br /> <a href="{7}">Acknowledge</a> <br /> <a href="{8}">Close</a> <br /> <a href="{9}">Device Events</a>""".format(alrt_body[0], alrt_body[1], alrt_body[2], alrt_body[3], alrt_body[4], alrt_body[5], alrt_body[6], alrt_body[7], alrt_body[8], alrt_body[9])
 	else:
-		message = '[casc-zenoss] SYSTEMS - CLEAR: {3} {0} <br /> Event: {1} <br /> Cleared by: {0} <br /> At: {2} <br /> Device: {3} <br /> Component: {4} <br /> Severity: {5} <br /> Message: <br /> {6} <br /> <a href="{7}">Undelete</a>'.format(alrt_body[2], alrt_body[3], alrt_body[4], alrt_body[1], alrt_body[5], alrt_body[0], alrt_body[6], alrt_body[7])
+		message = """[casc-zenoss] SYSTEMS - CLEAR: {3} {0} <br /> Event: {1} <br /> Cleared by: {0} <br /> At: {2} <br /> Device: {3} <br /> Component: {4} <br /> Severity: {5} <br /> Message: <br /> {6} <br /> <a href="{7}">Undelete</a>""".format(alrt_body[2], alrt_body[3], alrt_body[4], alrt_body[1], alrt_body[5], alrt_body[0], alrt_body[6], alrt_body[7])
 
-	post_alert(alrt_type, alrt_body[0], message)
+	# post_alert(alrt_type, alrt_body[0], message)
+	print message
 
 parser = argparse.ArgumentParser(
 	description="Sends an incident/clear message from Zenoss to a HipChat Room",

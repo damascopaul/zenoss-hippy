@@ -25,13 +25,13 @@ API_TOKEN				 | The HipChat API v2 token.
 Login to your Zenoss web console. Then go to ```Events > Triggers > Notifications```. Create a new notification and select ```command``` as its action. Go to the content tab of your notification and paste the command below on the Command field.
 
 ``` 
-python /path/to/zenoss-hippy/zenoss-hip.py '${evt/severityString}' '${evt/device}' '${evt/summary}' '${evt/component}' '${evt/lastTime}' '${evt/message}' '${urls/eventUrl}' '${urls/ackUrl}' '${urls/closeUrl}' '${urls/eventsUrl}' -t incident
+python /path/to/zenoss-hippy/zenoss-hip.py '${urls/eventUrl}' '${urls/ackUrl}' '${urls/closeUrl}' '${urls/eventsUrl}' -e '${evt/uuid}' -t incident
 ```
 
 Then, on the Clear Command field, paste the command found below.
 
 ```
-python /path/to/zenoss-hippy/zenoss-hip.py '${evt/severityString}' '${evt/device}' '${clearEvt/summary}' '${evt/summary}' '${clearEvt/firstTime}' '${evt/component}' '${evt/message}' '${urls/reopenUrl}' -t clear
+python /path/to/zenoss-hippy/zenoss-hip.py '${urls/reopenUrl}' -e '${evt/uuid}' -t clear
 ```
 
 Note: Change ```/path/to/zenoss-hippy/zenoss-hip.py``` to the path where you placed the script.
