@@ -30,7 +30,7 @@ API_TOKEN=''
 
 def log_this(log_message):
 	log = open(LOG_FILE, 'a')
-	log.write(log_message)
+	log.write(log_message+"\n")
 	log.close()
 
 #Post a message in HipChat using HipChat API v2
@@ -82,30 +82,37 @@ def post_alert(msg_type, msg_severity, msg_body):
 def get_alert(alrt_evid, alrt_type, alrt_urls):
 	message = None
 
-	filter_zep = zep.createEventFilter(uuid=alrt_evid)
-	for summary in zep.getEventSummariesGenerator(filter=filter_zep):
+	try:
+		filter_zep = zep.createEventFilter(uuid=alrt_evid)
+		for summary in zep.getEventSummariesGenerator(filter=filter_zep):
 
-		sync()
+			sync()
 
-        		evt = EventSummaryProxy(from_dict(EventSummary, summary))
+	        		evt = EventSummaryProxy(from_dict(EventSummary, summary))
 
-		if evt.severity == 5:
-			severity_string='Critical'
-		elif evt.severity == 4:
-			severity_string='Error'
-		elif evt.severity == 3:
-			severity_string='Warning'
-		elif evt.severity == 2:
-			severity_string='Info'
-		elif evt.severity == 1:
-			severity_string='Debug'
+			if evt.severity == 5:
+				severity_string='Critical'
+			elif evt.severity == 4:
+				severity_string='Error'
+			elif evt.severity == 3:
+				severity_string='Warning'
+			elif evt.severity == 2:
+				severity_string='Info'
+			elif evt.severity == 1:
+				severity_string='Debug'
 
-	  	if alrt_type == 'incident':
-			message = """[casc-zenoss] SYSTEMS - {1} {2} <br /> Device: {1} <br /> Component: {3} <br /> Severity: {0} <br /> Time: {4} <br /> Message: <br /> {5} <br /> <a href="{6}">Event Detail</a> <br /> <a href="{7}">Acknowledge</a> <br /> <a href="{8}">Close</a> <br /> <a href="{9}">Device Events</a>""".format(severity_string, evt.device, evt.summary, evt.component, evt.lastTime, evt.message, alrt_urls[0], alrt_urls[1], alrt_urls[2], alrt_urls[3])
+		  	if alrt_type == 'incident':
+				message = """[casc-zenoss] SYSTEMS - {1} {2} <br /> Device: {1} <br /> Component: {3} <br /> Severity: {0} <br /> Time: {4} <br /> Message: <br /> {5} <br /> <a href="{6}">Event Detail</a> <br /> <a href="{7}">Acknowledge</a> <br /> <a href="{8}">Close</a> <br /> <a href="{9}">Device Events</a>""".format(severity_string, evt.device, evt.summary, evt.component, evt.lastTime, evt.message, alrt_urls[0], alrt_urls[1], alrt_urls[2], alrt_urls[3])
+			else:
+				message = """[casc-zenoss] SYSTEMS - CLEAR: {0} {7} <br /> Event: {1} <br /> Cleared by: {7} <br /> At: {2} <br /> Device: {0} <br /> Component: {3} <br /> Severity: {4} <br /> Message: <br /> {5} <br /> <a href="{6}">Undelete</a>""".format(evt.device, evt.summary, alrt_urls[2], evt.component, severity_string, evt.message, alrt_urls[0], alrt_urls[1])
+
+		if message != None:
+			post_alert(alrt_type, severity_string, message)
 		else:
-			message = """[casc-zenoss] SYSTEMS - CLEAR: {0} {1} <br /> Event: {1}<br /> At: {2} <br /> Device: {0} <br /> Component: {3} <br /> Severity: {4} <br /> Message: <br /> {5} <br /> <a href="{6}">Undelete</a>""".format(evt.device, evt.summary, evt.lastTime, evt.component, severity_string, evt.message, alrt_urls[0])
-
-	post_alert(alrt_type, severity_string, message)
+			raise Exception("Invalid region name: {0}".format(regions[x]))
+	except Exception as e:
+		log_this( '{1} : Unexpected error: {0}'.format(e, TIME) )
+    		sys.exit(0)
 
 parser = argparse.ArgumentParser(
 	description="",
