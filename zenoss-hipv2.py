@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+# Posts zenoss alerts to a hipchat room
+
 import requests
 import json
 import requests.exceptions
